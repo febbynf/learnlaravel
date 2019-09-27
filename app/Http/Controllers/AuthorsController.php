@@ -49,7 +49,9 @@ class AuthorsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, ['name' => 'required|unique:authors']);
+        $author = Author::create($request->all());
+        return redirect()->route('authors.index');
     }
 
     /**
