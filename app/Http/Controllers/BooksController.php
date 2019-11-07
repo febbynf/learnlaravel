@@ -7,6 +7,8 @@ use Yajra\Datatables\Datatables;
 use App\Book;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 
 class BooksController extends Controller
 {
@@ -55,14 +57,8 @@ class BooksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        $this->validate($request, [
-            'title'     => 'required|unique:books,title',
-            'author_id' => 'required|exists:authors,id',
-            'amount'    => 'required|numeric',
-            'cover'     => 'image|max:2048'
-        ]);
 
         $book = Book::create($request->except('cover'));
 
@@ -155,6 +151,26 @@ class BooksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $book = Book::find($id);
+
+        if ($book->cover) {
+            $old_cover = $book->cover;
+            $filepath = public_path() . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $book->coover;
+
+            try {
+                File::delete($filepath);
+            } catch (FileNotFoundException $e) {
+                
+            }
+        }
+
+        $book->delete();
+
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil dihapus"
+        ]);
+
+        return redirect()->route('books.index');
     }
 }

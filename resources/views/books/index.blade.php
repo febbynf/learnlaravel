@@ -14,7 +14,7 @@
 					</div>
 					
 					<div class="panel-body">
-						<p><a class="btn btn-primary" href="{[ url('/admin/books/create') }}">Tambah</a></p>
+						<p><a class="btn btn-primary" href="{{ url('/admin/books/create') }}">Tambah</a></p>
 						
 						{!! $html->table(['class'=>'table-stripped']) !!}
 					</div>
