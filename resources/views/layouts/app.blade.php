@@ -15,9 +15,11 @@
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/jquery.dataTables.css" rel="stylesheet">
     <link href="/css/dataTables.bootstrap.css" rel="stylesheet">
-
+    <link href="/css/selectize.css" rel="stylesheet">
+    <link href="/css/selectize.bootstrap3.css" rel="stylesheet">
     <!-- Scripts -->
     <script>
+        
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
         ]); ?>
@@ -93,11 +95,13 @@
     </div>
 
     <!-- Scripts -->
+    <script src="/js/selectize.min.js"></script>
     <script src="/js/jquery-3.1.0.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery.dataTables.min.js"></script>
     <script src="/js/dataTables.bootstrap.min.js"></script>
     <script src="/js/custom.js"></script>
     @yield('scripts')
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

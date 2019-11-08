@@ -11,18 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 Route::get('/about', 'MyController@showAbout');
 Route::get('/testmodel', function() {
 	$query = App\Post::all();
 	return $query;
 });
 
+Route::get('/', 'GuestController@index');
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index');
 // Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function() {
 Route::group(['middleware' => 'web'], function () {
