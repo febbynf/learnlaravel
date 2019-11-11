@@ -31,3 +31,9 @@ Route::group(['middleware' => 'web'], function () {
 		Route::resource('books', 'BooksController');
 	});
 });
+
+Route::get('books/{book}/borrow', [
+	'middleware' => ['auth', 'role:member'],
+	'as'		 => 'guest.books.borrow',
+	'uses'		 => 'BooksController@borrow'
+]);
