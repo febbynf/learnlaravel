@@ -179,20 +179,22 @@ class BooksController extends Controller
     {
         try {
             $book = Book::findOrFail($id);
-            BorrowLog::create([
-                'user_id' => Auth::user()->id,
-                'book_id' => $id
-            ]);
+            Auth::user()->borrow($book);
             Session::flash("flash_notification", [
                 "level"     => "success",
                 "message"   => "Berhasil meminjam $book->title"
             ]);
+        } catch (BookException $e) {
+            Session::flash("flash_notification",
+                "level" => "danger",
+                "message" => $e->getMessage()
+
         } catch (ModelNotFoundException $e) {
             Session::flash("flash_notification", [
                 "level"     => "danger",
                 "message"   => "Buku tidak ditemukan."
             ]);
-        }
+        } 
         return redirect ('/');
     }
 }
