@@ -10,7 +10,7 @@
 	{!! Form::label('author_id', 'Penulis', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
 		{!! Form::select('author_id', [''=>'']+App\Author::pluck('name','id')->all(), null, [
-			'class'=>'js-selectize',
+			'class'=>firstml'js-selectize',
 			'placeholder'=> 'Pilih Penulis' ]) !!}
 		{!! $errors->first('author_id', '<p class="help-block">:message</p>') !!}
 	</div>

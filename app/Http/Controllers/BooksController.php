@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Session;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
 use App\Book;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\BorrowLog;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
@@ -155,8 +157,7 @@ class BooksController extends Controller
 
         if ($book->cover) {
             $old_cover = $book->cover;
-            $filepath = public_path() . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $book->coover;
-
+            $filepath = public_path() . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $book->cover;
             try {
                 File::delete($filepath);
             } catch (FileNotFoundException $e) {
@@ -172,5 +173,26 @@ class BooksController extends Controller
         ]);
 
         return redirect()->route('books.index');
+    }
+
+    public function borrow($id) 
+    {
+        try {
+            $book = Book::findOrFail($id);
+            BorrowLog::create([
+                'user_id' => Auth::user()->id,
+                'book_id' => $id
+            ]);
+            Session::flash("flash_notification", [
+                "level"     => "success",
+                "message"   => "Berhasil meminjam $book->title"
+            ]);
+        } catch (ModelNotFoundException $e) {
+            Session::flash("flash_notification", [
+                "level"     => "danger",
+                "message"   => "Buku tidak ditemukan."
+            ]);
+        }
+        return redirect ('/');
     }
 }
